@@ -1,0 +1,144 @@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+    th{ 
+        cursor: pointer;
+        color:#fff;
+       }
+       body{
+    margin: 0px;
+    padding:0px;
+    padding-right:0px;
+    border-right:0px;
+   }
+   #wrapper, #search-input
+   {
+       width: 1625px;
+   }
+</style>
+
+<div>
+    <div>
+        <div>    
+            <nav class="navbar navbar-expand-lg navbar-dark bg-danger" id="wrapper">
+                <a class="navbar-brand navbar-right" href="#">Popular artists</a>
+            </nav>
+            <input id="search-input" class="form-control" type="text" style="text-align: center" placeholder="Search for an Artist">  
+        </div>
+    </div>
+</div>
+
+<table class="table table-dark searchable sortable"> 
+    <thead class="thead-danger">
+        <tr class="bg-danger">
+            <th data-colname="artist" data-order="desc">Artist</th>
+            <th data-colname="song" data-order="desc">Song Name</th>
+            <th data-colname="songReleaseDate" data-order="desc">Release Date</th>
+            <th data-colname="playCount" data-order="desc">Play Count</th>
+            <th data-colname="metricA" data-order="desc">Metric A</th>
+            <th data-colname="metricB" data-order="desc">Metric B</th>
+            <th data-colname="metricC" data-order="desc">Metric C</th>
+            <th data-colname="metricD" data-order="desc">Metric D</th>
+            <th data-colname="metricE" data-order="desc">Metric E</th>
+            <th data-colname="metricF" data-order="desc">Metric F</th>
+            <th data-colname="metricG" data-order="desc">Metric G</th>
+            <th data-colname="metricH" data-order="desc">Metric H</th>
+            <th data-colname="metricI" data-order="desc">Metric I</th>
+            <th data-colname="metricJ" data-order="desc">Metric J</th>
+            <th data-colname="metricK" data-order="desc">Metric K</th>
+            <th data-colname="metricL" data-order="desc">Metric L</th>
+            <th data-colname="metricM" data-order="desc">Metric M</th>
+            <th data-colname="metricN" data-order="desc">Metric N</th>
+            <th data-colname="metricO" data-order="desc">Metric O</th>
+            <th data-colname="metricP" data-order="desc">Metric P</th>
+        </tr>
+        <tbody id="myTable">
+        </tbody>
+    </thead>
+</table>
+
+
+<script>
+    function fmtDate(d) {   //for sorting dates 
+        var date = new Date(d),
+            month = '' + (date.getMonth() + 1),
+            day = '' + date.getDate(),
+            year = date.getFullYear();
+        if (year < 1000) 
+            year = '0' + year;
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+        return [year, month, day].join('');
+    }
+
+    let url = 'https://raw.githubusercontent.com/antoxavier/tech_intern_challenge/main/songData.json'; //the function that links the json file
+    $.getJSON(url,
+    function (data) { //function to populate table using json file
+        var table = document.getElementById('myTable')
+        table.innerHTML=''
+        for (var i = 0; i < data.length; i++){
+            var row = `<tr>
+                            <td>${data[i].artist}</td>
+                            <td>${data[i].song}</td>
+                            <td sorttable_customkey="${fmtDate(data[i].songReleaseDate)}">${data[i].songReleaseDate}</td>
+                            <td>${data[i].playCount}</td>
+                            <td>${data[i].metricA}</td>
+                            <td>${data[i].metricB}</td>
+                            <td>${data[i].metricC}</td>
+                            <td>${data[i].metricD}</td>
+                            <td>${data[i].metricE}</td>
+                            <td>${data[i].metricF}</td>
+                            <td>${data[i].metricG}</td>
+                            <td>${data[i].metricH}</td>
+                            <td>${data[i].metricI}</td>
+                            <td>${data[i].metricJ}</td>
+                            <td>${data[i].metricK}</td>
+                            <td>${data[i].metricL}</td>
+                            <td>${data[i].metricM}</td>
+                            <td>${data[i].metricN}</td>
+                            <td>${data[i].metricO}</td>
+                            <td>${data[i].metricP}</td>
+                    </tr>`
+            table.innerHTML += row
+        }
+    });
+
+    $('#search-input').on('keyup', function() { //search func
+        var input, filter, table, tr, td, i, txt;
+        input = $(this).val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        console.log('Value:', input)
+        
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txt = td.textContent || td.innerText;
+                if (txt.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    })
+
+
+
+</script>
+
+    
+
+
+
+    
+    
+    
+
